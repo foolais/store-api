@@ -3,7 +3,8 @@ const Joi = require('joi');
 const createTableValidation = (payload) => {
   const schema = Joi.object({
     name: Joi.string().required(),
-    status: Joi.string().valid('empty', 'waiting', 'finished').default('empty')
+    status: Joi.string().valid('empty', 'waiting', 'finished').default('empty'),
+    category: Joi.string().valid('regular', 'custom').default('regular')
   }).messages({
     'any.required': '{{#label}} wajib diisi',
     'any.only': '{{#label}} harus diisi {{#valids}}'
@@ -15,7 +16,8 @@ const createTableValidation = (payload) => {
 const updateTableValidation = (payload) => {
   const schema = Joi.object({
     name: Joi.string(),
-    status: Joi.string().valid('empty', 'waiting', 'finished')
+    status: Joi.string().valid('empty', 'waiting', 'finished'),
+    category: Joi.string().valid('regular', 'custom')
   }).messages({
     'any.only': '{{#label}} harus diisi {{#valids}}'
   });

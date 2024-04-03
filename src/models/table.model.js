@@ -11,6 +11,11 @@ const tableSchema = new mongoose.Schema({
     required: true,
     default: 'empty'
   },
+  category: {
+    type: String,
+    required: true,
+    default: 'regular'
+  },
   timestamps: {
     created_at: {
       type: Date,
