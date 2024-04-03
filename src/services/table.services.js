@@ -1,7 +1,7 @@
 const tableModel = require('../models/table.model');
 
 const getAllTable = async () => {
-  return await tableModel.find();
+  return await tableModel.find().sort({ category: -1, name: 1 });
 };
 
 const getTableById = async (id) => {
