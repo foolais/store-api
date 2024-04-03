@@ -7,7 +7,7 @@ const logger = pino(
     base: {
       pid: false
     },
-    timestamps: () => `,"time":"${moment().format('LTS')}"`
+    timestamp: () => `,"time":"${moment().format('LTS')}"`
   },
   pretty()
 );
