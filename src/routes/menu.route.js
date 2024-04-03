@@ -1,9 +1,10 @@
 const { Router } = require('express');
-const { getMenu } = require('../controllers/menu.controller');
+const { getMenu, addMenu } = require('../controllers/menu.controller');
 
 const MenuRouter = Router();
 
 MenuRouter.get('/', getMenu);
 MenuRouter.get('/:id', getMenu);
+MenuRouter.post('/add', addMenu);
 
 module.exports = MenuRouter;

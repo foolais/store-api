@@ -8,4 +8,8 @@ const getMenuById = async (id) => {
   return await menuModel.findById({ _id: id }, { new: true });
 };
 
-module.exports = { getAllMenu, getMenuById };
+const addMenuData = async (payload) => {
+  return await menuModel.create(payload);
+};
+
+module.exports = { getAllMenu, getMenuById, addMenuData };

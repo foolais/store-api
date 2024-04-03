@@ -1,5 +1,6 @@
-const { getAllMenu, getMenuById } = require('../services/menu.services');
-const { successResponse, notFoundResponse, errorResponse } = require('../utils/response');
+const { getAllMenu, getMenuById, addMenuData } = require('../services/menu.services');
+const { successResponse, notFoundResponse, errorResponse, badRequestResponse } = require('../utils/response');
+const { createMenuValidation } = require('../validations/menu.validation');
 
 const getMenu = async (req, res) => {
   try {
@@ -26,4 +27,30 @@ const getMenu = async (req, res) => {
   }
 };
 
-module.exports = { getMenu };
+const addMenu = async (req, res) => {
+  // check empty body
+  if (Object.keys(req.body).length === 0) {
+    return badRequestResponse(400, null, 'Request Body Tidak Boleh Kosong', 'POST Menu data', null, res);
+  }
+
+  const { error, value } = createMenuValidation(req.body);
+
+  // error handling bad request post data
+  if (error) {
+    const errorMessage = error.details[0].message;
+    return badRequestResponse(400, null, errorMessage, 'POST Menu data', null, res);
+  }
+
+  try {
+    await addMenuData(value);
+    return successResponse(201, null, 'Data Berhasil Ditambahkan', 'POST Menu data', null, res);
+  } catch (error) {
+    // catch error handling
+    if (error.code === 11000) {
+      return badRequestResponse(400, null, 'Tidak Bisa Menambahkan Data yang Sama', 'POST Menu data', null, res);
+    }
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST Menu data', error, res);
+  }
+};
+
+module.exports = { getMenu, addMenu };
