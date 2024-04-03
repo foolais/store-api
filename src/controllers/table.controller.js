@@ -1,4 +1,11 @@
-const { getAllTable, addTableData, getTableById, updateTableData } = require('../services/table.services');
+const {
+  getAllTable,
+  addTableData,
+  getTableById,
+  updateTableData,
+  deleteTableById,
+  deleteAllTableData
+} = require('../services/table.services');
 const { successResponse, errorResponse, badRequestResponse, notFoundResponse } = require('../utils/response');
 const { createTableValidation, updateTableValidation } = require('../validations/table.validation');
 
@@ -84,4 +91,28 @@ const updateTable = async (req, res) => {
   }
 };
 
-module.exports = { getTable, createTable, updateTable };
+const deleteTable = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteTableById(id);
+    if (result) {
+      return successResponse(200, null, 'Data Berhasil Dihapus', 'DELETE Table data  by ID', null, res);
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'DELETE Table data by ID', null, res);
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'DELETE Table data by ID', error, res);
+  }
+};
+
+const deleteAllTable = async (req, res) => {
+  try {
+    const result = await deleteAllTableData();
+    if (result) {
+      return successResponse(200, null, 'Semua Data Berhasil Dihapus', 'DELETE Table data', null, res);
+    }
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'DELETE Table all data', error, res);
+  }
+};
+
+module.exports = { getTable, createTable, updateTable, deleteTable, deleteAllTable };
