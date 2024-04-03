@@ -12,4 +12,8 @@ const addTableData = async (payload) => {
   return await tableModel.create(payload);
 };
 
-module.exports = { getAllTable, getTableById, addTableData };
+const updateTableData = async (id, payload) => {
+  return await tableModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
+};
+
+module.exports = { getAllTable, getTableById, addTableData, updateTableData };
