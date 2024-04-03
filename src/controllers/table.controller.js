@@ -1,17 +1,30 @@
-const { getAllTable, addTableData } = require('../services/table.services');
-const { successResponse, serverErrorResponse, badRequestResponse } = require('../utils/response');
+const { getAllTable, addTableData, getTableById } = require('../services/table.services');
+const { successResponse, errorResponse, badRequestResponse, notFoundResponse } = require('../utils/response');
 const { createTableValidation } = require('../validations/table.validation');
 
 const getTable = async (req, res) => {
   try {
-    const table = await getAllTable();
-    if (table) {
-      return successResponse(200, table, 'Berhasil Mengambil Data', 'GET Table data', null, res);
+    // get from query
+    const { id } = req.params;
+
+    if (id) {
+      const table = await getTableById(id);
+      if (table) {
+        successResponse(200, table, 'Berhasil Mengambil Data', 'GET Table data by Id', null, res);
+      } else {
+        notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET Table data by Id', null, res);
+      }
     } else {
-      return serverErrorResponse(404, null, 'Data Tidak Ditemukan', 'GET Table data', null, res);
+      // get all table
+      const table = await getAllTable();
+      if (table) {
+        return successResponse(200, table, 'Berhasil Mengambil Data', 'GET Table data', null, res);
+      } else {
+        return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET Table data', null, res);
+      }
     }
   } catch (error) {
-    return serverErrorResponse(500, null, 'Internal Server Error', 'GET Table data', error, res);
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'GET Table data', error, res);
   }
 };
 
@@ -31,7 +44,7 @@ const createTable = async (req, res) => {
     if (error.code === 11000) {
       return badRequestResponse(400, null, 'Tidak Bisa Menambahkan Data yang Sama', 'POST Table data', null, res);
     }
-    return serverErrorResponse(500, null, 'Internal Server Error', 'POST Table data', error, res);
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST Table data', error, res);
   }
 };
 

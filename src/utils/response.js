@@ -15,6 +15,6 @@ const generateResponse = (statusCode, data, message, loggerMessage, error, res, 
 const successResponse = (...args) => generateResponse(...args, 'info');
 const notFoundResponse = (...args) => generateResponse(...args, 'warn');
 const badRequestResponse = (...args) => generateResponse(...args, 'warn');
-const serverErrorResponse = (...args) => generateResponse(...args, 'error');
+const errorResponse = (...args) => generateResponse(...args, 'error');
 
-module.exports = { successResponse, notFoundResponse, badRequestResponse, serverErrorResponse };
+module.exports = { successResponse, notFoundResponse, badRequestResponse, errorResponse };
