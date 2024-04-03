@@ -1,6 +1,6 @@
-const { HealthRouter } = require('./health.route');
+const TableRouter = require('./table.route');
 
-const _routes = [['/health', HealthRouter]];
+const _routes = [['/table', TableRouter]];
 
 const routes = (app) => {
   _routes.forEach((route) => {
