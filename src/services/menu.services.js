@@ -16,6 +16,10 @@ const updateMenuData = async (id, payload) => {
   return await menuModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
 };
 
+const deleteMenuById = async (id) => {
+  return await menuModel.findByIdAndDelete({ _id: id }, { new: true });
+};
+
 const changeAvailableMenuData = async (id) => {
   // find menuModel by id
   const menu = await menuModel.findById(id);
@@ -29,4 +33,4 @@ const changeAvailableMenuData = async (id) => {
   return menu; // return updated document
 };
 
-module.exports = { getAllMenu, getMenuById, addMenuData, updateMenuData, changeAvailableMenuData };
+module.exports = { getAllMenu, getMenuById, addMenuData, updateMenuData, deleteMenuById, changeAvailableMenuData };

@@ -3,7 +3,8 @@ const {
   getMenuById,
   addMenuData,
   updateMenuData,
-  changeAvailableMenuData
+  changeAvailableMenuData,
+  deleteMenuById
 } = require('../services/menu.services');
 const { successResponse, notFoundResponse, errorResponse, badRequestResponse } = require('../utils/response');
 const { createMenuValidation, updateMenuValidation } = require('../validations/menu.validation');
@@ -91,6 +92,19 @@ const updateMenu = async (req, res) => {
   }
 };
 
+const deleteMenu = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteMenuById(id);
+    if (result) {
+      return successResponse(200, null, 'Data Berhasil Dihapus', 'DELETE Menu data  by ID', null, res);
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'DELETE Menu data by ID', null, res);
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'DELETE Menu data by ID', error, res);
+  }
+};
+
 const changeAvailableMenu = async (req, res) => {
   const { id } = req.query;
   if (id === undefined) {
@@ -107,4 +121,4 @@ const changeAvailableMenu = async (req, res) => {
   }
 };
 
-module.exports = { getMenu, addMenu, updateMenu, changeAvailableMenu };
+module.exports = { getMenu, addMenu, updateMenu, deleteMenu, changeAvailableMenu };
