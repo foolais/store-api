@@ -78,6 +78,7 @@ const updateTable = async (req, res) => {
     // get id params
     const { id } = req.params;
     const result = await updateTableData(id, value);
+    // conditional Result
     if (result) {
       return successResponse(200, null, 'Data Berhasil Diupdate', 'PUT Table data', null, res);
     }

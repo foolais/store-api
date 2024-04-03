@@ -12,4 +12,8 @@ const addMenuData = async (payload) => {
   return await menuModel.create(payload);
 };
 
-module.exports = { getAllMenu, getMenuById, addMenuData };
+const updateMenuData = async (id, payload) => {
+  return await menuModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
+};
+
+module.exports = { getAllMenu, getMenuById, addMenuData, updateMenuData };

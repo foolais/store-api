@@ -20,17 +20,6 @@ const menuSchema = new mongoose.Schema({
     require: true,
     default: 'Food'
   },
-  is_additional: {
-    type: Boolean,
-    require: true,
-    default: false
-  },
-  additional: {
-    type: [String],
-    required: function () {
-      return this.is_additional;
-    }
-  },
   timestamps: {
     created_at: {
       type: Date,

@@ -5,12 +5,7 @@ const createMenuValidation = (payload) => {
     name: Joi.string().required(),
     price: Joi.number().required(),
     status: Joi.string().valid('available', 'empty').default('available'),
-    category: Joi.string().valid('food', 'drink').default('food'),
-    is_additional: Joi.boolean().default(false),
-    additional: Joi.array().items(Joi.string()).when('is_additional', {
-      is: true,
-      then: Joi.required()
-    })
+    category: Joi.string().valid('food', 'drink').default('food')
   }).messages({
     'any.required': '{{#label}} wajib diisi',
     'any.only': '{{#label}} harus diisi {{#valids}}'
@@ -19,4 +14,18 @@ const createMenuValidation = (payload) => {
   return schema.validate(payload);
 };
 
-module.exports = { createMenuValidation };
+const updateMenuValidation = (payload) => {
+  const schema = Joi.object({
+    name: Joi.string(),
+    price: Joi.number(),
+    status: Joi.string().valid('available', 'empty').default('available'),
+    category: Joi.string().valid('food', 'drink').default('food')
+  }).messages({
+    'any.required': '{{#label}} wajib diisi',
+    'any.only': '{{#label}} harus diisi {{#valids}}'
+  });
+
+  return schema.validate(payload);
+};
+
+module.exports = { createMenuValidation, updateMenuValidation };
