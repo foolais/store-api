@@ -16,4 +16,17 @@ const updateMenuData = async (id, payload) => {
   return await menuModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
 };
 
-module.exports = { getAllMenu, getMenuById, addMenuData, updateMenuData };
+const changeAvailableMenuData = async (id) => {
+  // find menuModel by id
+  const menu = await menuModel.findById(id);
+
+  // toogle the value of is_available field
+  menu.is_available = !menu.is_available;
+
+  // save updated document
+  await menu.save();
+
+  return menu; // return updated document
+};
+
+module.exports = { getAllMenu, getMenuById, addMenuData, updateMenuData, changeAvailableMenuData };

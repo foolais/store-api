@@ -1,4 +1,10 @@
-const { getAllMenu, getMenuById, addMenuData, updateMenuData } = require('../services/menu.services');
+const {
+  getAllMenu,
+  getMenuById,
+  addMenuData,
+  updateMenuData,
+  changeAvailableMenuData
+} = require('../services/menu.services');
 const { successResponse, notFoundResponse, errorResponse, badRequestResponse } = require('../utils/response');
 const { createMenuValidation, updateMenuValidation } = require('../validations/menu.validation');
 
@@ -85,4 +91,20 @@ const updateMenu = async (req, res) => {
   }
 };
 
-module.exports = { getMenu, addMenu, updateMenu };
+const changeAvailableMenu = async (req, res) => {
+  const { id } = req.query;
+  if (id === undefined) {
+    return badRequestResponse(400, null, 'Parameter ID Tidak Boleh Kosong', 'POST change status menu data', null, res);
+  }
+  try {
+    const result = await changeAvailableMenuData(id);
+    if (result) {
+      return successResponse(200, null, 'Berhasil mengganti status', 'POST change status menu data', null, res);
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'POST change status menu data', null, res);
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST change status menu data', error, res);
+  }
+};
+
+module.exports = { getMenu, addMenu, updateMenu, changeAvailableMenu };

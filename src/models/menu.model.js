@@ -10,10 +10,10 @@ const menuSchema = new mongoose.Schema({
     type: Number,
     require: true
   },
-  status: {
-    type: String,
+  is_available: {
+    type: Boolean,
     require: true,
-    default: 'available'
+    default: true
   },
   category: {
     type: String,
