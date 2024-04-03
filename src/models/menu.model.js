@@ -20,7 +20,7 @@ const menuSchema = new mongoose.Schema({
     require: true,
     default: 'Food'
   },
-  keterangan: {
+  notes: {
     type: String,
     require: true,
     default: ''
