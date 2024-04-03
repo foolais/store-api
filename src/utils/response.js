@@ -8,7 +8,7 @@ const generateResponse = (statusCode, data, message, loggerMessage, error, res, 
 
   if (data !== null) response.data = data;
 
-  logger[level](`${statusCode} ${loggerMessage} ${error && error}`);
+  logger[level](`${statusCode} ${loggerMessage} ${error ? error : ''}`);
   res.status(statusCode).send(response);
 };
 
