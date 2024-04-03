@@ -1,11 +1,11 @@
 const tableModel = require('../models/table.model');
 
 const getAllTable = async () => {
-  try {
-    return await tableModel.find();
-  } catch (error) {
-    throw error;
-  }
+  return await tableModel.find();
 };
 
-module.exports = { getAllTable };
+const addTableData = async (payload) => {
+  return await tableModel.create(payload);
+};
+
+module.exports = { getAllTable, addTableData };

@@ -1,6 +1,6 @@
 const logger = require('../utils/logger');
 
-const generateResponse = (statusCode, data, message, loggerMessage, method, error, res, level) => {
+const generateResponse = (statusCode, data, message, loggerMessage, error, res, level) => {
   const response = {
     statusCode,
     message: `${message}`
@@ -8,7 +8,7 @@ const generateResponse = (statusCode, data, message, loggerMessage, method, erro
 
   if (data !== null) response.data = data;
 
-  logger[level](`${method} ${statusCode} ${loggerMessage} ${error && error}`);
+  logger[level](`${statusCode} ${loggerMessage} ${error && error}`);
   res.status(statusCode).send(response);
 };
 
