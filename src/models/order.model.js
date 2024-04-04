@@ -41,11 +41,6 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  status: {
-    type: String,
-    required: true,
-    default: 'waiting'
-  },
   timestamps: {
     created_at: {
       type: Date,
