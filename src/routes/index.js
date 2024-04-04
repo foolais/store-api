@@ -1,9 +1,11 @@
 const TableRouter = require('./table.route');
 const MenuRouter = require('./menu.route');
+const OrderRouter = require('./order.route');
 
 const _routes = [
   ['/table', TableRouter],
-  ['/menu', MenuRouter]
+  ['/menu', MenuRouter],
+  ['/order', OrderRouter]
 ];
 
 const routes = (app) => {
