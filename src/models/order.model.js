@@ -37,6 +37,11 @@ const orderSchema = new mongoose.Schema({
       }
     }
   ],
+  status: {
+    type: String,
+    required: true,
+    default: 'waiting'
+  },
   total_price: {
     type: Number,
     required: true

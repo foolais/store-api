@@ -4,7 +4,7 @@ const getAllOrderData = async () => {
   const data = await orderModel
     .find()
     .populate('menu._id', 'name price category')
-    .populate('table._id', 'name status category');
+    .populate('table._id', 'name category');
   console.log({ data });
   return data;
 };
