@@ -1,6 +1,6 @@
 const { getAllOrderData, addOrderData } = require('../services/order.services');
 const { errorResponse, badRequestResponse, successResponse } = require('../utils/response');
-const { createOrderValidation } = require('../validations/order.validation');
+const { createOrUpdateOrderValidation } = require('../validations/order.validation');
 
 const getAllOrder = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ const addOrder = async (req, res) => {
     return badRequestResponse(400, null, 'Request Body Tidak Boleh Kosong', 'POST Order data', null, res);
   }
 
-  const { error, value } = createOrderValidation(req.body);
+  const { error, value } = createOrUpdateOrderValidation(req.body);
 
   // error handling bad request post data
   if (error) {
