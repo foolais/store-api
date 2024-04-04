@@ -1,4 +1,9 @@
-const { getAllOrderData, addOrderData, updateOrderData } = require('../services/order.services');
+const {
+  getAllOrderData,
+  addOrderData,
+  updateOrderDataById,
+  deleteOrderDataById
+} = require('../services/order.services');
 const { errorResponse, badRequestResponse, successResponse, notFoundResponse } = require('../utils/response');
 const { createOrUpdateOrderValidation } = require('../validations/order.validation');
 
@@ -49,7 +54,7 @@ const updateOrder = async (req, res) => {
   try {
     // get id params
     const { id } = req.params;
-    const result = await updateOrderData(id, value);
+    const result = await updateOrderDataById(id, value);
     // conditional result
     if (result) {
       return successResponse(200, null, 'Data Berhasil Diupdate', 'PUT Order data', null, res);
@@ -57,8 +62,23 @@ const updateOrder = async (req, res) => {
     return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'PUT Order data', null, res);
   } catch (error) {
     // catch error handling
-    return errorResponse(500, null, `Internal Server Error: ${error}`, 'PUT Table data', error, res);
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'PUT Order data', error, res);
   }
 };
 
-module.exports = { getAllOrder, addOrder, updateOrder };
+const deleteOrder = async (req, res) => {
+  try {
+    // get id params
+    const { id } = req.params;
+
+    const result = await deleteOrderDataById(id);
+    if (result) {
+      return successResponse(200, null, 'Data Berhasil Dihapus', 'DELETE Order data  by ID', null, res);
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'DELETE Order data by ID', null, res);
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'DELETE Order data by ID', error, res);
+  }
+};
+
+module.exports = { getAllOrder, addOrder, updateOrder, deleteOrder };
