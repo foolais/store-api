@@ -1,5 +1,5 @@
-const { getAllOrderData, addOrderData } = require('../services/order.services');
-const { errorResponse, badRequestResponse, successResponse } = require('../utils/response');
+const { getAllOrderData, addOrderData, updateOrderData } = require('../services/order.services');
+const { errorResponse, badRequestResponse, successResponse, notFoundResponse } = require('../utils/response');
 const { createOrUpdateOrderValidation } = require('../validations/order.validation');
 
 const getAllOrder = async (req, res) => {
@@ -33,4 +33,32 @@ const addOrder = async (req, res) => {
   }
 };
 
-module.exports = { getAllOrder, addOrder };
+const updateOrder = async (req, res) => {
+  // check empty body
+  if (Object.keys(req.body).length === 0) {
+    return badRequestResponse(400, null, 'Request Body Tidak Boleh Kosong', 'PUT Order data', null, res);
+  }
+
+  const { error, value } = createOrUpdateOrderValidation(req.body);
+
+  // error handling bad request PUT data
+  if (error) {
+    const errorMessage = error.details[0].message;
+    return badRequestResponse(400, null, errorMessage, 'PUT Order data', null, res);
+  }
+  try {
+    // get id params
+    const { id } = req.params;
+    const result = await updateOrderData(id, value);
+    // conditional result
+    if (result) {
+      return successResponse(200, null, 'Data Berhasil Diupdate', 'PUT Order data', null, res);
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'PUT Order data', null, res);
+  } catch (error) {
+    // catch error handling
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'PUT Table data', error, res);
+  }
+};
+
+module.exports = { getAllOrder, addOrder, updateOrder };

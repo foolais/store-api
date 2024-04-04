@@ -14,4 +14,8 @@ const addOrderData = async (payload) => {
   return await newOrder.save();
 };
 
-module.exports = { getAllOrderData, addOrderData };
+const updateOrderData = async (id, payload) => {
+  return await orderModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
+};
+
+module.exports = { getAllOrderData, addOrderData, updateOrderData };
