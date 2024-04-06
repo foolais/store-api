@@ -1,3 +1,4 @@
+const { validate } = require('../models/table.model');
 const {
   getAllMenu,
   getMenuById,
@@ -7,7 +8,11 @@ const {
   deleteMenuById
 } = require('../services/menu.services');
 const { successResponse, notFoundResponse, errorResponse, badRequestResponse } = require('../utils/response');
-const { createMenuValidation, updateMenuValidation } = require('../validations/menu.validation');
+const {
+  createMenuValidation,
+  updateMenuValidation,
+  validateChangeAvailableMenu
+} = require('../validations/menu.validation');
 
 const getMenu = async (req, res) => {
   try {
@@ -106,12 +111,13 @@ const deleteMenu = async (req, res) => {
 };
 
 const changeAvailableMenu = async (req, res) => {
-  const { id } = req.query;
-  if (id === undefined) {
-    return badRequestResponse(400, null, 'Parameter ID Tidak Boleh Kosong', 'POST change status menu data', null, res);
-  }
+  const { error, value } = validateChangeAvailableMenu(req.query);
+
+  if (error) return badRequestResponse(400, null, error, 'POST change availble menu data', null, res);
+
   try {
-    const result = await changeAvailableMenuData(id);
+    const { id } = value;
+    const result = await changeAvailableMenuData(id, value);
     if (result) {
       return successResponse(200, null, 'Berhasil mengganti status', 'POST change status menu data', null, res);
     }

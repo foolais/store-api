@@ -28,4 +28,21 @@ const updateMenuValidation = (payload) => {
   return schema.validate(payload);
 };
 
-module.exports = { createMenuValidation, updateMenuValidation };
+const validateChangeAvailableMenu = (payload) => {
+  const listAllowQuery = ['id', 'is_available'];
+
+  const payloadKeys = Object.keys(payload);
+
+  if (payloadKeys.length === 1) return { error: 'tidak diizinkan hanya mengirim id' };
+
+  for (const key of payloadKeys) {
+    if (!listAllowQuery.includes(key)) return { error: `${key} tidak diizinkan` };
+    if (payload[key] && !payload[key]) {
+      return { error: `${key} wajib ada` };
+    }
+  }
+
+  return { value: payload };
+};
+
+module.exports = { createMenuValidation, updateMenuValidation, validateChangeAvailableMenu };

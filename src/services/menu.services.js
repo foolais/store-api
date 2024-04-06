@@ -20,12 +20,16 @@ const deleteMenuById = async (id) => {
   return await menuModel.findByIdAndDelete({ _id: id }, { new: true });
 };
 
-const changeAvailableMenuData = async (id) => {
+const changeAvailableMenuData = async (id, payload) => {
   // find menuModel by id
   const menu = await menuModel.findById(id);
 
   // toogle the value of is_available field
-  menu.is_available = !menu.is_available;
+  Object.keys(payload).forEach((key) => {
+    if (payload[key] && key !== 'id') {
+      menu[key] = payload[key];
+    }
+  });
 
   // save updated document
   await menu.save();

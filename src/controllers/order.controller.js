@@ -103,8 +103,6 @@ const changeStatusOrder = async (req, res) => {
 
   if (error) return badRequestResponse(400, null, error, 'POST change served order data', null, res);
 
-  console.log({ value });
-
   try {
     const { id } = value;
     const result = await changeStatusOrderData(id, value);
