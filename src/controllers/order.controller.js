@@ -6,6 +6,7 @@ const {
   getOrderById,
   changeStatusOrderData
 } = require('../services/order.services');
+const { updateTableData } = require('../services/table.services');
 const { errorResponse, badRequestResponse, successResponse, notFoundResponse } = require('../utils/response');
 const { createOrUpdateOrderValidation, validateChangeStatusOrder } = require('../validations/order.validation');
 
@@ -48,8 +49,15 @@ const addOrder = async (req, res) => {
   }
 
   try {
-    await addOrderData(value);
-    return successResponse(201, null, 'Data Berhasil Ditambahkan', 'POST Order data', null, res);
+    const [order, updateTableStatus] = await Promise.all([
+      addOrderData(value),
+      updateTableData(value.table._id, { status: 'waiting' })
+    ]);
+    if (order && updateTableStatus) {
+      return successResponse(201, null, 'Data Berhasil Ditambahkan', 'POST Order data', null, res);
+    } else {
+      throw new Error();
+    }
   } catch (error) {
     return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST order data', error, res);
   }

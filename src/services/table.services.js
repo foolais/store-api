@@ -17,7 +17,9 @@ const addTableData = async (payload) => {
 };
 
 const updateTableData = async (id, payload) => {
-  payload.timestamps.updated_at = Date.now();
+  const table = await getTableById(id);
+  table.timestamps.updated_at = Date.now();
+
   return await tableModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
 };
 
