@@ -13,7 +13,8 @@ const addMenuData = async (payload) => {
 };
 
 const updateMenuData = async (id, payload) => {
-  payload.timestamps.updated_at = Date.now();
+  const menu = await getMenuById(id);
+  menu.timestamps.updated_at = Date.now();
   return await menuModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
 };
 

@@ -22,7 +22,9 @@ const addOrderData = async (payload) => {
 };
 
 const updateOrderDataById = async (id, payload) => {
-  payload.timestamps.updated_at = Date.now();
+  const order = await orderModel.findById(id);
+  order.timestamps.updated_at = Date.now();
+
   return await orderModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
 };
 
