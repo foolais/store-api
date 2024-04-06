@@ -18,7 +18,8 @@ const createOrUpdateOrderValidation = (payload) => {
     .items(
       Joi.object({
         _id: Joi.string().regex(regexObjectId).required().messages(messagesValidateId('menu')),
-        quantity: Joi.number().required()
+        quantity: Joi.number().required(),
+        is_take_away: Joi.boolean().required().default(false)
       })
     )
     .required()

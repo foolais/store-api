@@ -34,6 +34,11 @@ const orderSchema = new mongoose.Schema({
       quantity: {
         type: Number,
         required: true
+      },
+      is_take_away: {
+        type: Boolean,
+        required: true,
+        default: false
       }
     }
   ],
