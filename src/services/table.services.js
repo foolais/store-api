@@ -1,7 +1,11 @@
 const tableModel = require('../models/table.model');
 
 const getAllTable = async () => {
-  return await tableModel.find().sort({ category: -1, name: 1 });
+  const sortOrder = ['regular', 'take_away', 'custom'];
+  return await tableModel.aggregate([
+    { $addFields: { sortOrder: { $indexOfArray: [sortOrder, '$category'] } } },
+    { $sort: { sortOrder: 1, name: 1 } }
+  ]);
 };
 
 const getTableById = async (id) => {

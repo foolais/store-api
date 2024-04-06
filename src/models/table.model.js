@@ -14,7 +14,8 @@ const tableSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    default: 'regular'
+    default: 'regular',
+    enum: ['regular', 'take_away', 'custom']
   },
   timestamps: {
     created_at: {
