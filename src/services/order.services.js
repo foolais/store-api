@@ -29,4 +29,25 @@ const deleteOrderDataById = async (id) => {
   return await orderModel.findByIdAndDelete({ _id: id }, { new: true });
 };
 
-module.exports = { getAllOrderData, getOrderById, addOrderData, updateOrderDataById, deleteOrderDataById };
+const changeStatusOrderData = async (id, payload) => {
+  const order = await orderModel.findById(id);
+
+  Object.keys(payload).forEach((key) => {
+    if (payload[key] && key !== 'id') {
+      order[key] = payload[key];
+    }
+  });
+
+  await order.save();
+
+  return order;
+};
+
+module.exports = {
+  getAllOrderData,
+  getOrderById,
+  addOrderData,
+  updateOrderDataById,
+  deleteOrderDataById,
+  changeStatusOrderData
+};

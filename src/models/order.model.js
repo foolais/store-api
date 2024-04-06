@@ -46,6 +46,16 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  total_paid: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  is_served: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   is_finished: {
     type: Boolean,
     required: true,

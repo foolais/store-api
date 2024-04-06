@@ -28,26 +28,59 @@ const createOrUpdateOrderValidation = (payload, isUpdate) => {
     });
 
   const totalPriceSchema = Joi.number().required().messages({
-    'any.required': 'total_price wajib diisi'
+    'any.required': 'total price wajib diisi'
   });
 
-  const isFinishedSchema = Joi.boolean().required().default(false).messages({
+  const totalPaidSchema = Joi.number().required().messages({
+    'any.required': 'total paid wajib diisi'
+  });
+
+  const isServedSchema = Joi.boolean().required().messages({
+    'any.required': 'is served wajib diisi'
+  });
+
+  const isFinsihedSchema = Joi.boolean().required().messages({
     'any.required': 'is finished wajib diisi'
   });
 
   // validate result
   const tableValidationResult = tableSchema.validate(payload.table);
   const menuValidationResult = menuSchema.validate(payload.menu);
+
   const totalPriceValidationResult = totalPriceSchema.validate(payload.total_price);
-  const isFinishedValidationResult = isFinishedSchema.validate(payload.is_finished);
+  const totalPaidValidationResult = totalPaidSchema.validate(payload.total_paid);
+
+  const isServedValidationResult = isServedSchema.validate(payload.is_served);
+  const isFinishedValidationResult = isFinsihedSchema.validate(payload.is_finished);
 
   let error = tableValidationResult.error || menuValidationResult.error || totalPriceValidationResult.error;
 
-  if (isUpdate && isFinishedValidationResult.error) {
+  if (isUpdate && isServedValidationResult.error) {
+    error = isServedValidationResult.error;
+  } else if (isUpdate && isFinishedValidationResult.error) {
     error = isFinishedValidationResult.error;
+  } else if (isUpdate && totalPaidValidationResult.error) {
+    error = totalPaidValidationResult.error;
   }
 
   return error ? { error } : { value: payload };
 };
 
-module.exports = { createOrUpdateOrderValidation };
+const validateChangeStatusOrder = (payload) => {
+  const listAllowQuery = ['id', 'is_served', 'is_finished'];
+
+  const payloadKeys = Object.keys(payload);
+
+  if (payloadKeys.length === 1) return { error: 'tidak diizinkan hanya mengirim id' };
+
+  for (const key of payloadKeys) {
+    if (!listAllowQuery.includes(key)) return { error: `${key} tidak diizinkan` };
+    if (payload[key] && !payload[key]) {
+      return { error: `${key} wajib ada` };
+    }
+  }
+
+  return { value: payload };
+};
+
+module.exports = { createOrUpdateOrderValidation, validateChangeStatusOrder };

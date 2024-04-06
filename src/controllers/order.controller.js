@@ -3,10 +3,11 @@ const {
   addOrderData,
   updateOrderDataById,
   deleteOrderDataById,
-  getOrderById
+  getOrderById,
+  changeStatusOrderData
 } = require('../services/order.services');
 const { errorResponse, badRequestResponse, successResponse, notFoundResponse } = require('../utils/response');
-const { createOrUpdateOrderValidation } = require('../validations/order.validation');
+const { createOrUpdateOrderValidation, validateChangeStatusOrder } = require('../validations/order.validation');
 
 const getAllOrder = async (req, res) => {
   try {
@@ -97,4 +98,23 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-module.exports = { getAllOrder, getSingleOrder, addOrder, updateOrder, deleteOrder };
+const changeStatusOrder = async (req, res) => {
+  const { error, value } = validateChangeStatusOrder(req.query);
+
+  if (error) return badRequestResponse(400, null, error, 'POST change served order data', null, res);
+
+  console.log({ value });
+
+  try {
+    const { id } = value;
+    const result = await changeStatusOrderData(id, value);
+    if (result) {
+      return successResponse(200, null, 'Berhasil mengganti status served', 'POST change served order data', null, res);
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'POST change served order data', null, res);
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST change served order data', error, res);
+  }
+};
+
+module.exports = { getAllOrder, getSingleOrder, addOrder, updateOrder, deleteOrder, changeStatusOrder };
