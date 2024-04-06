@@ -9,7 +9,8 @@ const tableSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default: 'empty'
+    default: 'empty',
+    enum: ['empty', 'waiting', 'finished']
   },
   category: {
     type: String,

@@ -7,7 +7,7 @@ const messagesValidateId = (type) => ({
   'string.pattern.base': `Invalid Object ID in ${type} for {{#label}}`
 });
 
-const createOrUpdateOrderValidation = (payload) => {
+const createOrUpdateOrderValidation = (payload, isUpdate) => {
   const tableSchema = Joi.object({
     _id: Joi.string().regex(regexObjectId).required().messages(messagesValidateId('table'))
   }).messages({
@@ -31,17 +31,23 @@ const createOrUpdateOrderValidation = (payload) => {
     'any.required': 'total_price wajib diisi'
   });
 
+  const isFinishedSchema = Joi.boolean().required().default(false).messages({
+    'any.required': 'is finished wajib diisi'
+  });
+
   // validate result
   const tableValidationResult = tableSchema.validate(payload.table);
   const menuValidationResult = menuSchema.validate(payload.menu);
   const totalPriceValidationResult = totalPriceSchema.validate(payload.total_price);
+  const isFinishedValidationResult = isFinishedSchema.validate(payload.is_finished);
 
-  const error = tableValidationResult.error || menuValidationResult.error || totalPriceValidationResult.error;
+  let error = tableValidationResult.error || menuValidationResult.error || totalPriceValidationResult.error;
 
-  if (error) {
-    return { error };
+  if (isUpdate && isFinishedValidationResult.error) {
+    error = isFinishedValidationResult.error;
   }
-  return { value: payload };
+
+  return error ? { error } : { value: payload };
 };
 
 module.exports = { createOrUpdateOrderValidation };

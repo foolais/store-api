@@ -38,7 +38,7 @@ const addOrder = async (req, res) => {
     return badRequestResponse(400, null, 'Request Body Tidak Boleh Kosong', 'POST Order data', null, res);
   }
 
-  const { error, value } = createOrUpdateOrderValidation(req.body);
+  const { error, value } = createOrUpdateOrderValidation(req.body, false);
 
   // error handling bad request post data
   if (error) {
@@ -60,7 +60,7 @@ const updateOrder = async (req, res) => {
     return badRequestResponse(400, null, 'Request Body Tidak Boleh Kosong', 'PUT Order data', null, res);
   }
 
-  const { error, value } = createOrUpdateOrderValidation(req.body);
+  const { error, value } = createOrUpdateOrderValidation(req.body, true);
 
   // error handling bad request PUT data
   if (error) {
