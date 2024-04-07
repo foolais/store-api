@@ -14,4 +14,15 @@ const createUserValidation = (payload) => {
   return schema.validate(payload);
 };
 
-module.exports = { createUserValidation };
+const createSessionValidation = (payload) => {
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+  }).messages({
+    'any.required': '{{#label}} wajib diisi'
+  });
+
+  return schema.validate(payload);
+};
+
+module.exports = { createUserValidation, createSessionValidation };

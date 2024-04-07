@@ -4,4 +4,8 @@ const createUserData = async (payload) => {
   return await userModel.create(payload);
 };
 
-module.exports = { createUserData };
+const getUsersByEmail = async (email) => {
+  return await userModel.findOne({ email });
+};
+
+module.exports = { createUserData, getUsersByEmail };

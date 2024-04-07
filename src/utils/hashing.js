@@ -7,4 +7,8 @@ const hashing = async (password) => {
   return hash;
 };
 
-module.exports = hashing;
+const comparePassword = async (password, hash) => {
+  return bcrypt.compareSync(password, hash);
+};
+
+module.exports = { hashing, comparePassword };
