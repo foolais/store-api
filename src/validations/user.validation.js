@@ -5,7 +5,7 @@ const createUserValidation = (payload) => {
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-    role: Joi.string().required().valid('regular', 'admin', 'super admin')
+    role: Joi.string().required().valid('regular', 'admin')
   }).messages({
     'any.required': '{{#label}} wajib diisi',
     'any.only': '{{#label}} harus diisi {{#valids}}'
