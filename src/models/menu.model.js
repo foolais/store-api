@@ -19,7 +19,7 @@ const menuSchema = new mongoose.Schema({
     type: String,
     require: true,
     default: 'food',
-    enum: ['food', 'drink']
+    enum: ['food', 'drink', 'extra']
   },
   timestamps: {
     created_at: {
