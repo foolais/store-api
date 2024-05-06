@@ -51,7 +51,7 @@ const addOrder = async (req, res) => {
   try {
     const [order, updateTableStatus] = await Promise.all([
       addOrderData(value),
-      updateTableData(value.table._id, { status: 'waiting' })
+      updateTableData(value.table._id, { is_available: true })
     ]);
     if (order && updateTableStatus) {
       return successResponse(201, null, 'Data Berhasil Ditambahkan', 'POST Order data', null, res);

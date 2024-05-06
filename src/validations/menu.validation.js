@@ -4,7 +4,7 @@ const createMenuValidation = (payload) => {
   const schema = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().required(),
-    status: Joi.boolean().default(true),
+    is_available: Joi.boolean().default(true),
     category: Joi.string().valid('food', 'drink', 'extra').default('food')
   }).messages({
     'any.required': '{{#label}} wajib diisi',
@@ -18,7 +18,7 @@ const updateMenuValidation = (payload) => {
   const schema = Joi.object({
     name: Joi.string(),
     price: Joi.number(),
-    status: Joi.boolean().default(true),
+    is_available: Joi.boolean().default(true),
     category: Joi.string().valid('food', 'drink', 'extra').default('food')
   }).messages({
     'any.required': '{{#label}} wajib diisi',
