@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const createUserValidation = (payload) => {
   const schema = Joi.object({
-    name: Joi.string().required(),
+    username: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     role: Joi.string().required().valid('regular', 'admin')

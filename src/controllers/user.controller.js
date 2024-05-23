@@ -54,14 +54,14 @@ const createSession = async (req, res) => {
 
     const accessToken = signJwt({ ...user }, { expiresIn: '12h' });
 
-    return successResponse(
-      200,
-      { token: accessToken },
-      'Login Berhasil Berhasil',
-      'POST create session data',
-      null,
-      res
-    );
+    const data = {
+      email: user.email,
+      username: user.username,
+      role: user.role,
+      token: accessToken
+    };
+
+    return successResponse(200, data, 'Login Berhasil Berhasil', 'POST create session data', null, res);
   } catch (error) {
     return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST create user data', error, res);
   }
