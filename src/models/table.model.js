@@ -16,7 +16,13 @@ const tableSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'regular',
-    enum: ['regular', 'take_away', 'custom']
+    enum: ['regular', 'custom']
+  },
+  type: {
+    type: String,
+    required: true,
+    default: 'regular',
+    enum: ['dine_in', 'take_away']
   },
   timestamps: {
     created_at: {

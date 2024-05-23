@@ -1,7 +1,7 @@
 const tableModel = require('../models/table.model');
 
 const getAllTable = async () => {
-  const sortOrder = ['regular', 'take_away', 'custom'];
+  const sortOrder = ['regular', 'custom'];
   return await tableModel.aggregate([
     { $addFields: { sortOrder: { $indexOfArray: [sortOrder, '$category'] } } },
     { $sort: { sortOrder: 1, name: 1 } }
