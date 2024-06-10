@@ -5,7 +5,8 @@ const {
   updateOrder,
   deleteOrder,
   getSingleOrder,
-  changeStatusOrder
+  changeStatusOrder,
+  getSingleOrderByTableID
 } = require('../controllers/order.controller');
 
 const { requireSuperAdmin } = require('../middleware/authUser');
@@ -14,6 +15,7 @@ const orderRouter = Router();
 
 orderRouter.get('/', getAllOrder);
 orderRouter.get('/:id', getSingleOrder);
+orderRouter.get('/table/:id', getSingleOrderByTableID);
 orderRouter.post('/add', requireSuperAdmin, addOrder);
 orderRouter.put('/update/:id', requireSuperAdmin, updateOrder);
 orderRouter.post('/update/status', requireSuperAdmin, changeStatusOrder);

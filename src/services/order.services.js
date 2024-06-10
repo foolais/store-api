@@ -23,6 +23,10 @@ const getOrderById = async (id) => {
   return data;
 };
 
+const getOrderByTableID = async (id) => {
+  return await orderModel.findOne({ 'table._id': id });
+};
+
 const addOrderData = async (payload) => {
   const newOrder = new orderModel(payload);
   return await newOrder.save();
@@ -77,5 +81,6 @@ module.exports = {
   addOrderData,
   updateOrderDataById,
   deleteOrderDataById,
-  changeStatusOrderData
+  changeStatusOrderData,
+  getOrderByTableID
 };

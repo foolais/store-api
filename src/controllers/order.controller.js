@@ -4,7 +4,8 @@ const {
   updateOrderDataById,
   deleteOrderDataById,
   getOrderById,
-  changeStatusOrderData
+  changeStatusOrderData,
+  getOrderByTableID
 } = require('../services/order.services');
 const { updateTableData } = require('../services/table.services');
 const { errorResponse, badRequestResponse, successResponse, notFoundResponse } = require('../utils/response');
@@ -24,6 +25,21 @@ const getSingleOrder = async (req, res) => {
     // get id params
     const { id } = req.params;
     const result = await getOrderById(id);
+    if (result) {
+      successResponse(200, result, 'Berhasil Mengambil Data', 'GET Order data by Id', null, res);
+    } else {
+      notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET Order data by Id', null, res);
+    }
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'GET Table data', error, res);
+  }
+};
+
+const getSingleOrderByTableID = async (req, res) => {
+  try {
+    // get id params
+    const { id } = req.params;
+    const result = await getOrderByTableID(id);
     if (result) {
       successResponse(200, result, 'Berhasil Mengambil Data', 'GET Order data by Id', null, res);
     } else {
@@ -124,5 +140,13 @@ const changeStatusOrder = async (req, res) => {
   }
 };
 
-module.exports = { getAllOrder, getSingleOrder, addOrder, updateOrder, deleteOrder, changeStatusOrder };
+module.exports = {
+  getAllOrder,
+  getSingleOrder,
+  addOrder,
+  updateOrder,
+  deleteOrder,
+  changeStatusOrder,
+  getSingleOrderByTableID
+};
 //
