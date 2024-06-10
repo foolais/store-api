@@ -4,9 +4,11 @@ const {
   getTableById,
   updateTableData,
   deleteTableById,
-  deleteAllTableData
+  deleteAllTableData,
+  changeOrderTableData
 } = require('../services/table.services');
 const { successResponse, errorResponse, badRequestResponse, notFoundResponse } = require('../utils/response');
+const { validateChangeStatusOrder } = require('../validations/order.validation');
 const { createTableValidation, updateTableValidation } = require('../validations/table.validation');
 
 const getTable = async (req, res) => {
@@ -116,4 +118,29 @@ const deleteAllTable = async (req, res) => {
   }
 };
 
-module.exports = { getTable, createTable, updateTable, deleteTable, deleteAllTable };
+const changeOrderTable = async (req, res) => {
+  const { error, value } = validateChangeStatusOrder(req.query);
+
+  if (error) return badRequestResponse(400, null, error, 'POST change is order table', null, res);
+
+  try {
+    const { id } = value;
+
+    const result = await changeOrderTableData(id, value);
+    if (result) {
+      return successResponse(
+        200,
+        null,
+        'Berhasil mengganti status order table',
+        'POST change is order table',
+        null,
+        res
+      );
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'POST change is order table', null, res);
+  } catch (error) {
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST change is order table', error, res);
+  }
+};
+
+module.exports = { getTable, createTable, updateTable, deleteTable, deleteAllTable, changeOrderTable };

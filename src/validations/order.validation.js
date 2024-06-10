@@ -68,7 +68,7 @@ const createOrUpdateOrderValidation = (payload, isUpdate) => {
 };
 
 const validateChangeStatusOrder = (payload) => {
-  const listAllowQuery = ['id', 'is_served', 'is_finished'];
+  const listAllowQuery = ['id', 'is_finished'];
 
   const payloadKeys = Object.keys(payload);
 

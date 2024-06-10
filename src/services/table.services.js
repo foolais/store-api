@@ -27,4 +27,28 @@ const deleteAllTableData = async () => {
   return await tableModel.deleteMany({});
 };
 
-module.exports = { getAllTable, getTableById, addTableData, updateTableData, deleteTableById, deleteAllTableData };
+const changeOrderTableData = async (id, payload) => {
+  const table = await tableModel.findById(id);
+
+  Object.keys(payload).forEach((key) => {
+    if (payload[key] && key !== 'id') {
+      table[key] = payload[key];
+    }
+  });
+
+  payload.timestamps.updated_at = Date.now();
+
+  await table.save();
+
+  return table;
+};
+
+module.exports = {
+  getAllTable,
+  getTableById,
+  addTableData,
+  updateTableData,
+  deleteTableById,
+  deleteAllTableData,
+  changeOrderTableData
+};

@@ -1,4 +1,6 @@
 const orderModel = require('../models/order.model');
+const tableModel = require('../models/table.model');
+const { updateTableData } = require('./table.services');
 
 const getAllOrderData = async () => {
   try {
@@ -37,20 +39,36 @@ const deleteOrderDataById = async (id) => {
   return await orderModel.findByIdAndDelete({ _id: id }, { new: true });
 };
 
-const changeStatusOrderData = async (id, payload) => {
-  const order = await orderModel.findById(id);
+const changeStatusOrderData = async (payload) => {
+  try {
+    const { id, is_finished } = payload;
 
-  Object.keys(payload).forEach((key) => {
-    if (payload[key] && key !== 'id') {
-      order[key] = payload[key];
+    const order = await orderModel.findById(id);
+    const table = await tableModel.findById(order.table._id);
+
+    if (!order) {
+      throw new Error('Order not found');
     }
-  });
 
-  payload.timestamps.updated_at = Date.now();
+    if (!table) {
+      throw new Error('Table not found');
+    }
 
-  await order.save();
+    if (is_finished === 'true') {
+      updateTableData(table._id, { isOrder: false });
+    } else if (is_finished === 'false') {
+      updateTableData(table._id, { isOrder: true });
+    }
 
-  return order;
+    order.is_finished = is_finished;
+    order.timestamps.updated_at = Date.now();
+
+    await order.save();
+
+    return order;
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {

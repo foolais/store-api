@@ -51,8 +51,9 @@ const addOrder = async (req, res) => {
   try {
     const [order, updateTableStatus] = await Promise.all([
       addOrderData(value),
-      updateTableData(value.table._id, { is_available: true })
+      updateTableData(value.table._id, { isOrder: true })
     ]);
+
     if (order && updateTableStatus) {
       return successResponse(201, null, 'Data Berhasil Ditambahkan', 'POST Order data', null, res);
     } else {
@@ -112,15 +113,16 @@ const changeStatusOrder = async (req, res) => {
   if (error) return badRequestResponse(400, null, error, 'POST change served order data', null, res);
 
   try {
-    const { id } = value;
-    const result = await changeStatusOrderData(id, value);
-    if (result) {
-      return successResponse(200, null, 'Berhasil mengganti status served', 'POST change served order data', null, res);
+    const order = await changeStatusOrderData(value);
+
+    if (order) {
+      return successResponse(200, null, 'Berhasil mengganti status order', 'POST change status order data', null, res);
     }
-    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'POST change served order data', null, res);
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'POST change status order data', null, res);
   } catch (error) {
-    return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST change served order data', error, res);
+    return errorResponse(500, null, `Internal Server Error: ${error}`, 'POST change status order data', error, res);
   }
 };
 
 module.exports = { getAllOrder, getSingleOrder, addOrder, updateOrder, deleteOrder, changeStatusOrder };
+//
