@@ -10,7 +10,7 @@ const tableSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'empty',
-    enum: ['empty', 'waiting', 'finished']
+    enum: ['empty', 'waiting', 'eating', 'finished']
   },
   category: {
     type: String,
@@ -23,6 +23,11 @@ const tableSchema = new mongoose.Schema({
     required: true,
     default: 'regular',
     enum: ['dine_in', 'take_away']
+  },
+  isOrder: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   timestamps: {
     created_at: {
