@@ -14,6 +14,14 @@ const orderSchema = new mongoose.Schema({
         },
         message: 'Table ID tidak ditemukan'
       }
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    category: {
+      type: String,
+      required: true
     }
   },
   menu: [
@@ -31,6 +39,18 @@ const orderSchema = new mongoose.Schema({
           message: 'Menu ID tidak ditemukan'
         }
       },
+      name: {
+        type: String,
+        required: true
+      },
+      price: {
+        type: Number,
+        required: true
+      },
+      category: {
+        type: String,
+        required: true
+      },
       quantity: {
         type: Number,
         required: true
@@ -40,25 +60,20 @@ const orderSchema = new mongoose.Schema({
         required: true,
         default: false
       },
-      notes: {
-        type: String,
-        default: ''
+      is_served: {
+        type: Boolean,
+        required: true,
+        default: false
       }
     }
   ],
+  notes: {
+    type: String,
+    default: ''
+  },
   total_price: {
     type: Number,
     required: true
-  },
-  total_paid: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  is_served: {
-    type: Boolean,
-    required: true,
-    default: false
   },
   is_finished: {
     type: Boolean,

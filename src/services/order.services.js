@@ -1,18 +1,23 @@
 const orderModel = require('../models/order.model');
 
 const getAllOrderData = async () => {
-  const data = await orderModel
-    .find()
-    .populate('menu._id', 'name price category')
-    .populate('table._id', 'name category');
-  return data;
+  try {
+    const orders = await orderModel.find();
+
+    const result = orders.map((order) => {
+      const orderObj = order.toObject();
+      delete orderObj.menu;
+      return orderObj;
+    });
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const getOrderById = async (id) => {
-  const data = await orderModel
-    .findById({ _id: id })
-    .populate('menu._id', 'name price category')
-    .populate('table._id', 'name category');
+  const data = await orderModel.findById({ _id: id });
   return data;
 };
 

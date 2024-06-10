@@ -9,7 +9,9 @@ const messagesValidateId = (type) => ({
 
 const createOrUpdateOrderValidation = (payload, isUpdate) => {
   const tableSchema = Joi.object({
-    _id: Joi.string().regex(regexObjectId).required().messages(messagesValidateId('table'))
+    _id: Joi.string().regex(regexObjectId).required().messages(messagesValidateId('table')),
+    name: Joi.string().required(),
+    category: Joi.string().required().valid('regular', 'custom')
   }).messages({
     'any.required': '{{#label}} di table wajib diisi'
   });
@@ -18,8 +20,12 @@ const createOrUpdateOrderValidation = (payload, isUpdate) => {
     .items(
       Joi.object({
         _id: Joi.string().regex(regexObjectId).required().messages(messagesValidateId('menu')),
+        name: Joi.string().required(),
+        price: Joi.number().required(),
+        category: Joi.string().required().valid('food', 'drink', 'extra'),
         quantity: Joi.number().required(),
-        is_take_away: Joi.boolean().required().default(false)
+        is_take_away: Joi.boolean().required().default(false),
+        is_served: Joi.boolean().default(false)
       })
     )
     .required()
@@ -27,16 +33,12 @@ const createOrUpdateOrderValidation = (payload, isUpdate) => {
       'any.required': '{{#label}} di menu wajib diisi'
     });
 
+  const notesSchema = Joi.string().required().messages({
+    'any.required': 'notes wajib diisi'
+  });
+
   const totalPriceSchema = Joi.number().required().messages({
     'any.required': 'total price wajib diisi'
-  });
-
-  const totalPaidSchema = Joi.number().required().messages({
-    'any.required': 'total paid wajib diisi'
-  });
-
-  const isServedSchema = Joi.boolean().required().messages({
-    'any.required': 'is served wajib diisi'
   });
 
   const isFinsihedSchema = Joi.boolean().required().messages({
@@ -45,22 +47,21 @@ const createOrUpdateOrderValidation = (payload, isUpdate) => {
 
   // validate result
   const tableValidationResult = tableSchema.validate(payload.table);
+
   const menuValidationResult = menuSchema.validate(payload.menu);
 
-  const totalPriceValidationResult = totalPriceSchema.validate(payload.total_price);
-  const totalPaidValidationResult = totalPaidSchema.validate(payload.total_paid);
+  const notesValidationResult = notesSchema.validate(payload.notes);
 
-  const isServedValidationResult = isServedSchema.validate(payload.is_served);
+  const totalPriceValidationResult = totalPriceSchema.validate(payload.total_price);
+
   const isFinishedValidationResult = isFinsihedSchema.validate(payload.is_finished);
 
   let error = tableValidationResult.error || menuValidationResult.error || totalPriceValidationResult.error;
 
-  if (isUpdate && isServedValidationResult.error) {
-    error = isServedValidationResult.error;
+  if (isUpdate && notesValidationResult.error) {
+    error = notesValidationResult.error;
   } else if (isUpdate && isFinishedValidationResult.error) {
     error = isFinishedValidationResult.error;
-  } else if (isUpdate && totalPaidValidationResult.error) {
-    error = totalPaidValidationResult.error;
   }
 
   return error ? { error } : { value: payload };
