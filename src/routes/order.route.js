@@ -6,7 +6,8 @@ const {
   deleteOrder,
   getSingleOrder,
   changeStatusOrder,
-  getSingleOrderByTableID
+  getSingleOrderByTableID,
+  toggleMenuOrderServed
 } = require('../controllers/order.controller');
 
 const { requireSuperAdmin } = require('../middleware/authUser');
@@ -19,6 +20,7 @@ orderRouter.get('/table/:id', getSingleOrderByTableID);
 orderRouter.post('/add', requireSuperAdmin, addOrder);
 orderRouter.put('/update/:id', requireSuperAdmin, updateOrder);
 orderRouter.post('/update/status', requireSuperAdmin, changeStatusOrder);
+orderRouter.post('/update/menu/status', requireSuperAdmin, toggleMenuOrderServed);
 orderRouter.delete('/delete/:id', requireSuperAdmin, deleteOrder);
 
 module.exports = orderRouter;

@@ -84,4 +84,21 @@ const validateChangeStatusOrder = (payload) => {
   return { value: payload };
 };
 
-module.exports = { createOrUpdateOrderValidation, validateChangeStatusOrder };
+const validateToogleServedStatus = (payload) => {
+  const listAllowQuery = ['order_id', 'menu_id'];
+
+  const payloadKeys = Object.keys(payload);
+
+  if (payloadKeys.length === 1) return { error: 'tidak diizinkan hanya mengirim id' };
+
+  for (const key of payloadKeys) {
+    if (!listAllowQuery.includes(key)) return { error: `${key} tidak diizinkan` };
+    if (payload[key] && !payload[key]) {
+      return { error: `${key} wajib ada` };
+    }
+  }
+
+  return { value: payload };
+};
+
+module.exports = { createOrUpdateOrderValidation, validateChangeStatusOrder, validateToogleServedStatus };

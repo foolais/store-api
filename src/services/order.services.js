@@ -75,6 +75,36 @@ const changeStatusOrderData = async (payload) => {
   }
 };
 
+const toggleMenuOrderServedStatus = async (payload) => {
+  try {
+    const { order_id, menu_id } = payload;
+
+    const order = await orderModel.findById(order_id);
+    const table = await tableModel.findById(order.table._id);
+    const menu = order.menu.find((item) => item._id.toString() === menu_id.toString());
+
+    if (!order) throw new Error('Order not found');
+    if (!table) throw new Error('Table not found');
+    if (!menu) throw new Error('Menu not found');
+
+    menu.is_served = !menu.is_served;
+
+    const isAllMenuServed = order.menu.every((item) => item.is_served);
+    if (isAllMenuServed) {
+      updateTableData(table._id, { status: 'eating' });
+    } else {
+      updateTableData(table._id, { status: 'waiting' });
+    }
+
+    order.timestamps.updated_at = Date.now();
+
+    await order.save();
+    return order;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getAllOrderData,
   getOrderById,
@@ -82,5 +112,6 @@ module.exports = {
   updateOrderDataById,
   deleteOrderDataById,
   changeStatusOrderData,
-  getOrderByTableID
+  getOrderByTableID,
+  toggleMenuOrderServedStatus
 };

@@ -5,11 +5,16 @@ const {
   deleteOrderDataById,
   getOrderById,
   changeStatusOrderData,
-  getOrderByTableID
+  getOrderByTableID,
+  toggleMenuOrderServedStatus
 } = require('../services/order.services');
 const { updateTableData } = require('../services/table.services');
 const { errorResponse, badRequestResponse, successResponse, notFoundResponse } = require('../utils/response');
-const { createOrUpdateOrderValidation, validateChangeStatusOrder } = require('../validations/order.validation');
+const {
+  createOrUpdateOrderValidation,
+  validateChangeStatusOrder,
+  validateToogleServedStatus
+} = require('../validations/order.validation');
 
 const getAllOrder = async (req, res) => {
   try {
@@ -126,7 +131,7 @@ const deleteOrder = async (req, res) => {
 const changeStatusOrder = async (req, res) => {
   const { error, value } = validateChangeStatusOrder(req.query);
 
-  if (error) return badRequestResponse(400, null, error, 'POST change served order data', null, res);
+  if (error) return badRequestResponse(400, null, error, 'POST change finish order data', null, res);
 
   try {
     const order = await changeStatusOrderData(value);
@@ -140,6 +145,37 @@ const changeStatusOrder = async (req, res) => {
   }
 };
 
+const toggleMenuOrderServed = async (req, res) => {
+  const { error, value } = validateToogleServedStatus(req.query);
+
+  if (error) return badRequestResponse(400, null, error, 'POST toogle served order data', null, res);
+
+  try {
+    const order = await toggleMenuOrderServedStatus(value);
+
+    if (order) {
+      return successResponse(
+        200,
+        null,
+        'Berhasil mengganti status served menu',
+        'POST toogle served menu order data',
+        null,
+        res
+      );
+    }
+    return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'POST toogle served menu order data', null, res);
+  } catch (error) {
+    return errorResponse(
+      500,
+      null,
+      `Internal Server Error: ${error}`,
+      'POST toogle served menu order data',
+      error,
+      res
+    );
+  }
+};
+
 module.exports = {
   getAllOrder,
   getSingleOrder,
@@ -147,6 +183,7 @@ module.exports = {
   updateOrder,
   deleteOrder,
   changeStatusOrder,
-  getSingleOrderByTableID
+  getSingleOrderByTableID,
+  toggleMenuOrderServed
 };
 //
