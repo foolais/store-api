@@ -5,7 +5,7 @@ const getAllTable = async () => {
 };
 
 const getTableById = async (id) => {
-  return await tableModel.findById({ _id: id }, { new: true });
+  return await tableModel.findById({ _id: id });
 };
 
 const addTableData = async (payload) => {

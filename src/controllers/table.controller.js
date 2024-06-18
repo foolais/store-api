@@ -26,7 +26,7 @@ const getTable = async (req, res) => {
     } else {
       // get all table
       const table = await getAllTable();
-      if (table) {
+      if (table && table.length > 0) {
         return successResponse(200, table, 'Berhasil Mengambil Data', 'GET Table data', null, res);
       } else {
         return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET Table data', null, res);
