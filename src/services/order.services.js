@@ -59,9 +59,9 @@ const changeStatusOrderData = async (payload) => {
     }
 
     if (is_finished === 'true') {
-      updateTableData(table._id, { isOrder: false, status: 'empty' });
+      updateTableData(table._id, { is_order: false, status: 'empty' });
     } else if (is_finished === 'false') {
-      updateTableData(table._id, { isOrder: true });
+      updateTableData(table._id, { is_order: true });
     }
 
     order.is_finished = is_finished;

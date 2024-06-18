@@ -72,7 +72,7 @@ const addOrder = async (req, res) => {
   try {
     const [order, updateTableStatus] = await Promise.all([
       addOrderData(value),
-      updateTableData(value.table._id, { isOrder: true, status: 'waiting' })
+      updateTableData(value.table._id, { is_order: true, status: 'waiting' })
     ]);
 
     if (order && updateTableStatus) {

@@ -6,7 +6,7 @@ const createTableValidation = (payload) => {
     status: Joi.string().valid('empty', 'waiting', 'eating', 'finished').default('empty'),
     category: Joi.string().valid('regular', 'custom').default('regular'),
     type: Joi.string().valid('dine_in', 'take_away').default('dine_in'),
-    isOrder: Joi.boolean().default(false)
+    is_order: Joi.boolean().default(false)
   }).messages({
     'any.required': '{{#label}} wajib diisi',
     'any.only': '{{#label}} harus diisi {{#valids}}'
@@ -21,7 +21,7 @@ const updateTableValidation = (payload) => {
     status: Joi.string().valid('empty', 'waiting', 'eating', 'finished'),
     category: Joi.string().valid('regular', 'custom'),
     type: Joi.string().valid('dine_in', 'take_away'),
-    isOrder: Joi.boolean().default(false)
+    is_order: Joi.boolean().default(false)
   }).messages({
     'any.only': '{{#label}} harus diisi {{#valids}}'
   });

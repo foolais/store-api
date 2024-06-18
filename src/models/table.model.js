@@ -24,7 +24,7 @@ const tableSchema = new mongoose.Schema({
     default: 'regular',
     enum: ['dine_in', 'take_away']
   },
-  isOrder: {
+  is_order: {
     type: Boolean,
     required: true,
     default: false
