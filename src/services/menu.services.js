@@ -5,7 +5,7 @@ const getAllMenu = async () => {
 };
 
 const getMenuById = async (id) => {
-  return await menuModel.findById({ _id: id }, { new: true });
+  return await menuModel.findById({ _id: id });
 };
 
 const addMenuData = async (payload) => {

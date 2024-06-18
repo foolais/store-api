@@ -28,7 +28,7 @@ const getMenu = async (req, res) => {
     } else {
       // get all menu
       const menu = await getAllMenu();
-      if (menu) {
+      if (menu && menu.length > 0) {
         return successResponse(200, menu, 'Berhasil Mengambil Semua Data Menu', 'GET Menu data', null, res);
       } else {
         return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET Menu data', null, res);
