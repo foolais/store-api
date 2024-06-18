@@ -18,8 +18,12 @@ const {
 
 const getAllOrder = async (req, res) => {
   try {
-    const order = await getAllOrderData();
-    res.send({ order });
+    const result = await getAllOrderData();
+    if (result && result.length > 0) {
+      successResponse(200, result, 'Berhasil Mengambil Data', 'GET All Order', null, res);
+    } else {
+      notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET All Order', null, res);
+    }
   } catch (error) {
     return errorResponse(500, null, `Internal Server Error: ${error}`, 'GET Table data', error, res);
   }
@@ -43,9 +47,11 @@ const getSingleOrder = async (req, res) => {
 const getSingleOrderByTableID = async (req, res) => {
   try {
     // get id params
+    console.log(req.params);
     const { id } = req.params;
     const result = await getOrderByTableID(id);
-    if (result) {
+    console.log({ result });
+    if (result && result.length > 0) {
       successResponse(200, result, 'Berhasil Mengambil Data', 'GET Order data by Id', null, res);
     } else {
       notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET Order data by Id', null, res);
