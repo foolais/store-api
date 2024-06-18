@@ -3,7 +3,7 @@ const Joi = require('joi');
 const createTableValidation = (payload) => {
   const schema = Joi.object({
     name: Joi.string().required(),
-    status: Joi.string().valid('empty', 'waiting', 'eating', 'finished').default('empty'),
+    status: Joi.string().valid('empty', 'waiting', 'eating').default('empty'),
     category: Joi.string().valid('regular', 'custom').default('regular'),
     type: Joi.string().valid('dine_in', 'take_away').default('dine_in'),
     is_order: Joi.boolean().default(false)
@@ -18,7 +18,7 @@ const createTableValidation = (payload) => {
 const updateTableValidation = (payload) => {
   const schema = Joi.object({
     name: Joi.string(),
-    status: Joi.string().valid('empty', 'waiting', 'eating', 'finished'),
+    status: Joi.string().valid('empty', 'waiting', 'eating'),
     category: Joi.string().valid('regular', 'custom'),
     type: Joi.string().valid('dine_in', 'take_away'),
     is_order: Joi.boolean().default(false)

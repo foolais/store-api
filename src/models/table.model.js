@@ -10,7 +10,7 @@ const tableSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'empty',
-    enum: ['empty', 'waiting', 'eating', 'finished']
+    enum: ['empty', 'waiting', 'eating']
   },
   category: {
     type: String,
