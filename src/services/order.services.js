@@ -1,5 +1,6 @@
 const orderModel = require('../models/order.model');
 const tableModel = require('../models/table.model');
+const generateUniqueNumber = require('../utils/numberOrderGenerator');
 const { updateTableData } = require('./table.services');
 
 const getAllOrderData = async () => {
@@ -28,7 +29,14 @@ const getOrderByTableID = async (id) => {
 };
 
 const addOrderData = async (payload) => {
-  const newOrder = new orderModel(payload);
+  const latestOrder = await orderModel.findOne().sort({
+    'timestamps.created_at': -1
+  });
+
+  const latestNumberOrder = latestOrder?.number_order || null;
+
+  const number_order = generateUniqueNumber(latestNumberOrder);
+  const newOrder = new orderModel({ ...payload, number_order });
   return await newOrder.save();
 };
 
