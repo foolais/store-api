@@ -47,11 +47,9 @@ const getSingleOrder = async (req, res) => {
 const getSingleOrderByTableID = async (req, res) => {
   try {
     // get id params
-    console.log(req.params);
     const { id } = req.params;
     const result = await getOrderByTableID(id);
-    console.log({ result });
-    if (result && result.length > 0) {
+    if (result) {
       successResponse(200, result, 'Berhasil Mengambil Data', 'GET Order data by Id', null, res);
     } else {
       notFoundResponse(404, null, 'Data Tidak Ditemukan', 'GET Order data by Id', null, res);
@@ -124,8 +122,11 @@ const deleteOrder = async (req, res) => {
     // get id params
     const { id } = req.params;
 
-    const result = await deleteOrderDataById(id);
-    if (result) {
+    const [result, updateTableStatus] = await Promise.all([
+      deleteOrderDataById(id),
+      updateTableData(value.table._id, { is_order: true, status: 'empty' })
+    ]);
+    if (result && updateTableStatus) {
       return successResponse(200, null, 'Data Berhasil Dihapus', 'DELETE Order data  by ID', null, res);
     }
     return notFoundResponse(404, null, 'Data Tidak Ditemukan', 'DELETE Order data by ID', null, res);
