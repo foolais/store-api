@@ -122,9 +122,12 @@ const deleteOrder = async (req, res) => {
     // get id params
     const { id } = req.params;
 
+    const order = await getOrderById(id);
+    const tableId = order?.table?._id;
+
     const [result, updateTableStatus] = await Promise.all([
       deleteOrderDataById(id),
-      updateTableData(value.table._id, { is_order: true, status: 'empty' })
+      updateTableData(tableId, { is_order: false, status: 'empty' })
     ]);
     if (result && updateTableStatus) {
       return successResponse(200, null, 'Data Berhasil Dihapus', 'DELETE Order data  by ID', null, res);
