@@ -33,7 +33,7 @@ const createOrUpdateOrderValidation = (payload, isUpdate) => {
       'any.required': '{{#label}} di menu wajib diisi'
     });
 
-  const notesSchema = Joi.string().required().messages({
+  const notesSchema = Joi.string().allow('').required().messages({
     'any.required': 'notes wajib diisi'
   });
 
