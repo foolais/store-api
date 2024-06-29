@@ -79,6 +79,15 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  total_paid: {
+    type: Number,
+    default: 0
+  },
+  payment_method: {
+    type: String,
+    required: true,
+    default: 'cash'
+  },
   is_finished: {
     type: Boolean,
     required: true,

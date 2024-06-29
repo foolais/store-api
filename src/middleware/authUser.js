@@ -11,7 +11,6 @@ const requireUser = (req, res, next) => {
 
 const requireAdmin = (req, res, next) => {
   const user = res.locals.user;
-  console.log({ user });
   if (!user || user._doc.role !== 'admin') {
     return errorResponse(403, null, 'Unauthorized', 'Unauthorized', null, res);
   }

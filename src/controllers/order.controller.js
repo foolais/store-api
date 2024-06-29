@@ -139,12 +139,15 @@ const deleteOrder = async (req, res) => {
 };
 
 const changeStatusOrder = async (req, res) => {
-  const { error, value } = validateChangeStatusOrder(req.query);
+  const { error: errorQuery, value: valueQuery } = validateChangeStatusOrder(req.query, 'query');
+  const { error: errorBody, value: valueBody } = validateChangeStatusOrder(req.body, 'body');
 
-  if (error) return badRequestResponse(400, null, error, 'POST change finish order data', null, res);
+  if (errorQuery !== null || errorBody !== null) {
+    return badRequestResponse(400, null, errorQuery || errorBody, 'POST change finish order data', null, res);
+  }
 
   try {
-    const order = await changeStatusOrderData(value);
+    const order = await changeStatusOrderData(valueQuery, valueBody);
 
     if (order) {
       return successResponse(200, null, 'Berhasil mengganti status order', 'POST change status order data', null, res);

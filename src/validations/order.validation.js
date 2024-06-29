@@ -67,23 +67,46 @@ const createOrUpdateOrderValidation = (payload, isUpdate) => {
   return error ? { error } : { value: payload };
 };
 
-const validateChangeStatusOrder = (payload) => {
+const validateChangeStatusOrder = (payload, type) => {
   const listAllowQuery = ['id', 'is_finished'];
 
-  const payloadKeys = Object.keys(payload);
+  if (type === 'query') {
+    const payloadKeys = Object.keys(payload);
 
-  if (payloadKeys.length === 1) return { error: 'tidak diizinkan hanya mengirim id' };
-
-  for (const key of payloadKeys) {
-    if (!listAllowQuery.includes(key)) return { error: `${key} tidak diizinkan` };
-    if (payload[key] && !payload[key]) {
-      return { error: `${key} wajib ada` };
+    if (payloadKeys.length === 1 && payloadKeys.includes('id')) {
+      return { error: 'tidak diizinkan hanya mengirim id' };
     }
-  }
 
-  return { value: payload };
+    for (const key of payloadKeys) {
+      if (!listAllowQuery.includes(key)) {
+        return { error: `${key} tidak diizinkan` };
+      }
+      if (payload[key] === undefined || payload[key] === null) {
+        return { error: `${key} wajib ada` };
+      }
+    }
+    return { error: null, value: payload };
+  } else if (type === 'body') {
+    const schema = Joi.object({
+      payment_method: Joi.string().valid('cash', 'qris').required().messages({
+        'any.required': 'payment method wajib diisi',
+        'any.only': 'payment method harus salah satu dari [cash, qris]'
+      }),
+      total_price: Joi.number().required().messages({
+        'any.required': 'total price wajib diisi'
+      }),
+      total_paid: Joi.number().required().messages({
+        'any.required': 'total paid wajib diisi'
+      })
+    });
+
+    const { error, value } = schema.validate(payload);
+
+    return { error: error || null, value };
+  }
 };
 
+module.exports = validateChangeStatusOrder;
 const validateToogleServedStatus = (payload) => {
   const listAllowQuery = ['order_id', 'menu_id'];
 

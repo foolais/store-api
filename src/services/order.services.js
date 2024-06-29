@@ -51,9 +51,9 @@ const deleteOrderDataById = async (id) => {
   return await orderModel.findByIdAndDelete({ _id: id }, { new: true });
 };
 
-const changeStatusOrderData = async (payload) => {
+const changeStatusOrderData = async (valueQuery, valueBody) => {
   try {
-    const { id, is_finished } = payload;
+    const { id, is_finished } = valueQuery;
 
     const order = await orderModel.findById(id);
     const table = await tableModel.findById(order.table._id);
@@ -67,7 +67,8 @@ const changeStatusOrderData = async (payload) => {
     }
 
     if (is_finished === 'true') {
-      updateTableData(table._id, { is_order: false, status: 'empty' });
+      await orderModel.findByIdAndUpdate({ _id: id }, valueBody);
+      await updateTableData(table._id, { is_order: false, status: 'empty' });
     } else if (is_finished === 'false') {
       updateTableData(table._id, { is_order: true });
     }
