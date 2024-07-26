@@ -8,16 +8,16 @@ const {
   changeOrderTable
 } = require('../controllers/table.controller');
 
-const { requireSuperAdmin } = require('../middleware/authUser');
+const { requireAdmin } = require('../middleware/authUser');
 
 const TableRouter = Router();
 
 TableRouter.get('/', getTable);
 TableRouter.get('/:id', getTable);
-TableRouter.post('/add', requireSuperAdmin, createTable);
-TableRouter.put('/update/:id', requireSuperAdmin, updateTable);
-TableRouter.delete('/delete/:id', requireSuperAdmin, deleteTable);
-TableRouter.delete('/delete', requireSuperAdmin, deleteAllTable);
-TableRouter.post('/update/status', requireSuperAdmin, changeOrderTable);
+TableRouter.post('/add', requireAdmin, createTable);
+TableRouter.put('/update/:id', requireAdmin, updateTable);
+TableRouter.delete('/delete/:id', requireAdmin, deleteTable);
+TableRouter.delete('/delete', requireAdmin, deleteAllTable);
+TableRouter.post('/update/status', requireAdmin, changeOrderTable);
 
 module.exports = TableRouter;
