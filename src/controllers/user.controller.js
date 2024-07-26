@@ -46,7 +46,7 @@ const createSession = async (req, res) => {
 
   try {
     const user = await getUsersByEmail(value.email);
-    const isValid = comparePassword(value.password, user.password);
+    const isValid = await comparePassword(value.password, user.password);
 
     if (!isValid) {
       return errorResponse(401, null, 'Invalid Email or Password', 'POST create session data', null, res);
