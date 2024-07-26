@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon"
+    "dev": "npx nodemon",
+    "build": "babel src --out-dir dist",
+    "start": "node dist/index.js"
   },
   "author": "foolais",
   "license": "ISC",
@@ -23,6 +25,9 @@
     "pino-pretty": "^11.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.8",
+    "@babel/core": "^7.24.9",
+    "@babel/preset-env": "^7.25.0",
     "prettier": "3.2.5"
   }
 }
