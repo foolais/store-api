@@ -1,7 +1,8 @@
+const config = require('../config/environment');
 const jwt = require('jsonwebtoken');
 
 const signJwt = (payload, options) => {
-  return jwt.sign(payload, process.env.JWT_PRIVATE, {
+  return jwt.sign(payload, config.JWT_PRIVATE, {
     ...(options && options),
     algorithm: 'RS256'
   });
@@ -9,7 +10,7 @@ const signJwt = (payload, options) => {
 
 const verifyToken = (token) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_PUBLIC);
+    const decoded = jwt.verify(token, config.JWT_PUBLIC);
     return {
       valid: true,
       expired: false,
