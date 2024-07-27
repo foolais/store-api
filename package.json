@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx nodemon",
     "build": "babel src --out-dir dist",
-    "start": "node index.js"
+    "start": "node dist/index.js"
   },
   "author": "foolais",
   "license": "ISC",
