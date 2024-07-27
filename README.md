@@ -1,0 +1,1 @@
+The Store POS API, built using Express.js and MongoDB, is now live in production at https://foolais-store-api.vercel.app/. This robust and scalable API facilitates efficient data management for point-of-sale systems.
