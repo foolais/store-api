@@ -1,3 +1,4 @@
+const WelcomeRouter = require('./welcome.route');
 const TableRouter = require('./table.route');
 const MenuRouter = require('./menu.route');
 const OrderRouter = require('./order.route');
@@ -5,6 +6,7 @@ const UserRouter = require('./user.route');
 const OverviewRouter = require('./overview.route');
 
 const _routes = [
+  ['/', WelcomeRouter],
   ['/table', TableRouter],
   ['/menu', MenuRouter],
   ['/order', OrderRouter],
